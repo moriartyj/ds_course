@@ -1,0 +1,189 @@
+if ( account_balance_'no account' <= 0.5 ) {
+	if ( duration <= 31.5 ) {
+		if ( credit_history_'all paid' <= 0.5 ) {
+			if ( duration <= 11.5 ) {
+				if ( property_magnitude_'real estate' <= 0.5 ) {
+					if ( age <= 34.5 ) {
+						if ( property_magnitude_car <= 0.5 ) {
+							return [[ 6.  4.]]
+						} else {
+							return [[ 4.  7.]]
+						}
+					} else {
+						return [[  3.  16.]]
+					}
+				} else {
+					if ( credit_amount <= 2372.0 ) {
+						return [[  0.  33.]]
+					} else {
+						return [[ 1.  9.]]
+					}
+				}
+			} else {
+				if ( credit_amount <= 1287.0 ) {
+					if ( property_magnitude_car <= 0.5 ) {
+						if ( purpose_'new car' <= 0.5 ) {
+							if ( account_balance_'0<=X<200' <= 0.5 ) {
+								return [[  9.  10.]]
+							} else {
+								return [[  2.  11.]]
+							}
+						} else {
+							return [[ 11.   5.]]
+						}
+					} else {
+						return [[ 17.   2.]]
+					}
+				} else {
+					if ( age <= 25.5 ) {
+						if ( credit_amount <= 3403.5 ) {
+							if ( credit_amount <= 1977.0 ) {
+								if ( housing_own <= 0.5 ) {
+									return [[ 5.  5.]]
+								} else {
+									return [[ 3.  8.]]
+								}
+							} else {
+								if ( credit_amount <= 2770.5 ) {
+									return [[ 10.   1.]]
+								} else {
+									return [[ 5.  5.]]
+								}
+							}
+						} else {
+							return [[  3.  14.]]
+						}
+					} else {
+						if ( purpose_'new car' <= 0.5 ) {
+							if ( age <= 51.5 ) {
+								if ( duration <= 22.5 ) {
+									if ( property_magnitude_'real estate' <= 0.5 ) {
+										if ( credit_amount <= 3371.5 ) {
+											return [[  0.  27.]]
+										} else {
+											return [[  1.  10.]]
+										}
+									} else {
+										return [[  3.  11.]]
+									}
+								} else {
+									if ( job_skilled <= 0.5 ) {
+										return [[  7.  10.]]
+									} else {
+										if ( installment_commitment <= 2.5 ) {
+											return [[  0.  12.]]
+										} else {
+											return [[  5.  12.]]
+										}
+									}
+								}
+							} else {
+								return [[ 6.  9.]]
+							}
+						} else {
+							if ( personal_status_'male single' <= 0.5 ) {
+								return [[ 10.   5.]]
+							} else {
+								if ( credit_amount <= 2276.0 ) {
+									return [[  0.  12.]]
+								} else {
+									return [[ 5.  7.]]
+								}
+							}
+						}
+					}
+				}
+			}
+		} else {
+			if ( other_payment_plans_none <= 0.5 ) {
+				return [[ 10.   7.]]
+			} else {
+				return [[ 10.   1.]]
+			}
+		}
+	} else {
+		if ( savings_status_'no known savings' <= 0.5 ) {
+			if ( duration <= 47.5 ) {
+				if ( age <= 29.5 ) {
+					return [[ 15.   4.]]
+				} else {
+					if ( credit_amount <= 4625.5 ) {
+						return [[ 10.   8.]]
+					} else {
+						return [[  2.  13.]]
+					}
+				}
+			} else {
+				if ( age <= 31.5 ) {
+					return [[ 10.   4.]]
+				} else {
+					return [[ 16.   1.]]
+				}
+			}
+		} else {
+			return [[  4.  10.]]
+		}
+	}
+} else {
+	if ( other_payment_plans_none <= 0.5 ) {
+		if ( purpose_radio/tv <= 0.5 ) {
+			if ( residence_since <= 2.5 ) {
+				if ( age <= 31.5 ) {
+					return [[ 4.  7.]]
+				} else {
+					return [[ 7.  4.]]
+				}
+			} else {
+				return [[  3.  11.]]
+			}
+		} else {
+			return [[  2.  14.]]
+		}
+	} else {
+		if ( age <= 22.5 ) {
+			return [[ 5.  6.]]
+		} else {
+			if ( credit_amount <= 4458.5 ) {
+				if ( num_dependents <= 1.5 ) {
+					if ( personal_status_'female div/dep/mar' <= 0.5 ) {
+						return [[   0.  114.]]
+					} else {
+						if ( age <= 30.5 ) {
+							if ( purpose_radio/tv <= 0.5 ) {
+								if ( credit_amount <= 1840.5 ) {
+									return [[  1.  12.]]
+								} else {
+									return [[ 3.  7.]]
+								}
+							} else {
+								return [[  0.  10.]]
+							}
+						} else {
+							return [[  0.  25.]]
+						}
+					}
+				} else {
+					if ( age <= 41.0 ) {
+						return [[  0.  17.]]
+					} else {
+						return [[ 3.  8.]]
+					}
+				}
+			} else {
+				if ( purpose_'used car' <= 0.5 ) {
+					if ( employment_'4<=X<7' <= 0.5 ) {
+						if ( credit_history_'critical/other existing credit' <= 0.5 ) {
+							return [[ 7.  5.]]
+						} else {
+							return [[ 2.  8.]]
+						}
+					} else {
+						return [[  0.  10.]]
+					}
+				} else {
+					return [[  0.  19.]]
+				}
+			}
+		}
+	}
+}

@@ -1,0 +1,868 @@
+{
+ "cells": [
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "collapsed": true
+   },
+   "outputs": [],
+   "source": [
+    "from IPython.display import display, HTML\n",
+    "import pandas as pd\n",
+    "pd.set_option('display.max_rows', 200)\n",
+    "pd.set_option('display.max_columns', 100)\n",
+    "pd.set_option('display.width', 1000)\n",
+    "\n",
+    "import numpy as np\n",
+    "import warnings\n",
+    "\n",
+    "\n",
+    "from datetime import datetime\n",
+    "import glob\n",
+    "import io, os , sys, types\n",
+    "import tabulate\n",
+    "import copy\n",
+    "\n",
+    "import random\n",
+    "\n",
+    "import matplotlib.pyplot as plt\n",
+    "%matplotlib inline\n",
+    "import itertools\n",
+    "\n",
+    "from sklearn.model_selection import train_test_split\n",
+    "from sklearn import linear_model\n",
+    "#from sklearn.linear_model import LogisticRegression\n",
+    "from sklearn.naive_bayes import BernoulliNB \n",
+    "from sklearn import datasets\n",
+    "from sklearn import metrics\n",
+    "from sklearn.metrics import roc_curve, auc\n",
+    "from sklearn.discriminant_analysis import LinearDiscriminantAnalysis\n",
+    "from sklearn.discriminant_analysis import QuadraticDiscriminantAnalysis\n",
+    "from sklearn import tree\n",
+    "from sklearn.externals.six import StringIO\n",
+    "from sklearn.ensemble import RandomForestClassifier\n",
+    "import pydotplus\n",
+    "\n",
+    "from scipy import stats\n",
+    "from scipy.stats import pearsonr\n",
+    "from scipy.stats import chi2_contingency\n",
+    "\n",
+    "from helper_functions import *\n",
+    "\n",
+    "import seaborn as sns\n",
+    "sns.set(color_codes=True)\n",
+    "\n",
+    "fontsz = 12\n",
+    "\n",
+    "# ROC Curve and Cutoff Analysis:\n",
+    "# https://ncss-wpengine.netdna-ssl.com/wp-content/themes/ncss/pdf/Procedures/NCSS/One_ROC_Curve_and_Cutoff_Analysis.pdf"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "## Loading the data"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "collapsed": true
+   },
+   "outputs": [],
+   "source": [
+    "# load the dataset\n",
+    "fname_germancredit = r'dataset/German.Credit.csv'\n",
+    "data_raw = pd.read_csv(fname_germancredit)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "collapsed": true
+   },
+   "outputs": [],
+   "source": [
+    "col_target = 'class'\n",
+    "cols_numeric = list(data_raw.describe().columns.values)\n",
+    "cols_categoric = list(set(data_raw.columns.values) - set(cols_numeric) - set([col_target]))"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "### Exploratory Data Analysis"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "collapsed": true
+   },
+   "outputs": [],
+   "source": [
+    "# data describe\n"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "collapsed": true
+   },
+   "outputs": [],
+   "source": [
+    "# display categoric columns\n"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "collapsed": true
+   },
+   "outputs": [],
+   "source": [
+    "# Contingency table (crosstab)\n"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "collapsed": true
+   },
+   "outputs": [],
+   "source": [
+    "# Contingency table, ratios. Rows add-up to 100%\n"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "collapsed": true
+   },
+   "outputs": [],
+   "source": [
+    "# Contingency table, ratios. Columns add-up to 100%\n"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "collapsed": true
+   },
+   "outputs": [],
+   "source": [
+    "# calculate and print p-value from contingency table\n"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "collapsed": true
+   },
+   "outputs": [],
+   "source": [
+    "# Do so for all predictors\n"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "### Descriptive Statistics for Numerical Predictors"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "### Correlation Matrix\n",
+    "Correlation between numeric variables. Plot the correlation matrix"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "collapsed": true
+   },
+   "outputs": [],
+   "source": [
+    "data_numeric = data_raw[cols_numeric].copy(deep=True)\n",
+    "corr_mat = data_numeric.corr(method='pearson')\n",
+    "cbar_ticks =np.linspace(-1,1,11)\n",
+    "cmap = sns.diverging_palette(220, 10, as_cmap=True)\n",
+    "plt.figure(figsize=[8,8])\n",
+    "plt.xticks(fontsize=fontsz+2)\n",
+    "plt.yticks(fontsize=fontsz+2)\n",
+    "ax = sns.heatmap(corr_mat, cmap=cmap, vmin=-1, vmax=1, square=True, linewidths=.5, cbar_kws={\"shrink\": .5})\n",
+    "cbar = ax.collections[0].colorbar\n",
+    "cbar.set_ticks(cbar_ticks)\n",
+    "cbar.set_ticklabels(cbar_ticks)\n",
+    "plt.show()"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "collapsed": true
+   },
+   "outputs": [],
+   "source": [
+    "# print the correlation matrix (just the numbers, not a figure)\n"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "### Histograms "
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "collapsed": true
+   },
+   "outputs": [],
+   "source": []
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "### Boxplot"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "collapsed": true
+   },
+   "outputs": [],
+   "source": []
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "### Preprocessing\n",
+    "Creating dummy-variables"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "collapsed": true
+   },
+   "outputs": [],
+   "source": [
+    "# Replace categorical variables with dummy-variables\n"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "collapsed": true
+   },
+   "outputs": [],
+   "source": [
+    "# Replace ‘bad’ and ‘good’ class labels with 0 and 1, before continuing with the exercise\n"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "### Model Evaluation"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "collapsed": true
+   },
+   "outputs": [],
+   "source": [
+    "# Random seed\n",
+    "seed = 1017\n",
+    "random.seed(seed)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "collapsed": true
+   },
+   "outputs": [],
+   "source": [
+    "# Split the data using the function, train_test_split()\n",
+    "frac_train = 0.8 # 80% of the data is used for training\n",
+    "X_train, X_test, y_train, y_test = \\\n",
+    "    train_test_split(data_raw[cols_features], data_raw[col_target], test_size=(1-frac_train), random_state=seed)\n",
+    "    \n",
+    "train_b = sum(y_train == 0)\n",
+    "train_g = sum(y_train == 1)\n",
+    "test_b = sum(y_test == 0)\n",
+    "test_g = sum(y_test == 1)\n",
+    "print (\"Class ratios between each set:\")\n",
+    "print (\"Trainset\")\n",
+    "print (\"\\t\\tNormal class (good):\", 100*train_g/len(y_train), \"%\\t\", \"Target class (bad):\", 100*train_b/len(y_train),\"%\")\n",
+    "print (\"Testset\")\n",
+    "print (\"\\t\\tNormal class (good):\", 100*test_g/len(y_test), \"%\\t\", \"Target class (bad):\", 100*test_b/len(y_test),\"%\")"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "collapsed": true
+   },
+   "outputs": [],
+   "source": [
+    "# Set Misclassification loss weights\n"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "### Logistic Regression Model\n",
+    "More about Logistic Regression examples in python can be found here:<br>\n",
+    "They are using a different (and more informative) logistic-regression package<br>\n",
+    "http://blog.yhat.com/posts/logistic-regression-python-rodeo.html"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "collapsed": true
+   },
+   "outputs": [],
+   "source": [
+    "# 1. Train the model\n"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "collapsed": true
+   },
+   "outputs": [],
+   "source": [
+    "mse = np.mean(y_train - model.predict(X_train)) ** 2\n",
+    "print (\"Mean Square Error: \", mse)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "collapsed": true,
+    "scrolled": true
+   },
+   "outputs": [],
+   "source": [
+    "# 2. Display the obtained model along with most relevant statistics\n"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "collapsed": true
+   },
+   "outputs": [],
+   "source": [
+    "# 3. Test the model\n"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "collapsed": true
+   },
+   "outputs": [],
+   "source": [
+    "# 4. Draw ROC Curve and calculate AUC\n"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "collapsed": true
+   },
+   "outputs": [],
+   "source": [
+    "# 5. Calculate the total misclassification loss\n"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "collapsed": true
+   },
+   "outputs": [],
+   "source": [
+    "# 6. Build the confusion matrix for the tests data for both the default and optimal thresholds\n"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "collapsed": true
+   },
+   "outputs": [],
+   "source": [
+    "# 7. Plot the confusion matrices\n"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "collapsed": true
+   },
+   "outputs": [],
+   "source": [
+    "# [Optional]: Plot the misclassification-loss vs threshold\n"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "## Naive Bayes Model"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "collapsed": true
+   },
+   "outputs": [],
+   "source": [
+    "# 1. Train the model and apply predictions\n"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "collapsed": true,
+    "scrolled": true
+   },
+   "outputs": [],
+   "source": [
+    "# 2. Display the obtained model along with most relevant statistics\n"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "collapsed": true
+   },
+   "outputs": [],
+   "source": [
+    "# 3. Draw ROC Curve and calculate AUC\n"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "collapsed": true
+   },
+   "outputs": [],
+   "source": [
+    "# 4. Calculate the total misclassification loss\n"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "collapsed": true
+   },
+   "outputs": [],
+   "source": [
+    "# 5. Build the confusion matrix for the tests data for both the default and optimal thresholds\n"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "collapsed": true
+   },
+   "outputs": [],
+   "source": [
+    "# 6. Plot the confusion matrices\n"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "## Decision Trees\n",
+    "Decision Trees is a recursive-repartitioning technique, which is used to recursively split the data in order to create nodes that are<br>\n",
+    "purer. A pure node is a node that consists of only 1-class of those existing in the data.<br>\n",
+    "In our context, a pure node would be composed of either all-\"bad\" or all-\"good\" classes.<br>\n",
+    "The advantages of DT is that it produces rules that are easy to follow, and human-readable, in contrast to other \"black-box\" algorithms, such as Random-Forest<br>\n",
+    "DTs however, are prone to overfitting, which is why we need to use some parameters to avoid such behavior.<br>\n",
+    "As with __Logistic Regression__, __DT__s also require categorical features to be dummified.<br>\n",
+    "1. Based on what we discussed, can you offer an intuition about why DTs tend to overfit?\n",
+    "2. [Advanced] Can you offer some ways to avoid overfitting?"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "collapsed": true
+   },
+   "outputs": [],
+   "source": [
+    "# 1. Train the model and apply predictions\n",
+    "md = 18                    # maximum tree depth\n",
+    "mf = len(cols_features)    # maximum number of features to consider\n",
+    "min_leaf = 10\n",
+    "criterion = 'entropy'\n",
+    "model = tree.DecisionTreeClassifier(max_depth=md, max_features=mf, criterion=criterion, \n",
+    "                                    min_samples_leaf=min_leaf, random_state=seed)\n",
+    "\n",
+    "clf = model.fit(X_train, y_train)\n",
+    "predicted = model.predict(X_test)\n",
+    "predicted_prob = model.predict_proba(X_test)[:, 1]"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "collapsed": true,
+    "scrolled": true
+   },
+   "outputs": [],
+   "source": [
+    "# 2. Display the obtained model along with most relevant statistics\n"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "collapsed": true
+   },
+   "outputs": [],
+   "source": [
+    "# Visualize the tree\n",
+    "##write_Tree('dataset', clf, cols_features) # can be used only for small trees (<=4)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "collapsed": true
+   },
+   "outputs": [],
+   "source": [
+    "# 3. Draw ROC Curve and calculate AUC\n"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "collapsed": true
+   },
+   "outputs": [],
+   "source": [
+    "# 4. Calculate the total misclassification loss\n"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "collapsed": true
+   },
+   "outputs": [],
+   "source": [
+    "# 5. Build the confusion matrix for the tests data for both the default and optimal thresholds\n"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "collapsed": true
+   },
+   "outputs": [],
+   "source": [
+    "# 6. Display the confusion matrices\n"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "## Random Forest\n",
+    "Random Forest is an ensemble learning classification method, which utilizes multiple decision-trees,<br>\n",
+    "and a voting mechanism in order to classify each sample."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "collapsed": true
+   },
+   "outputs": [],
+   "source": [
+    "# 1. Train the model and apply predictions\n"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "collapsed": true,
+    "scrolled": true
+   },
+   "outputs": [],
+   "source": [
+    "# 2. Display the obtained model along with most relevant statistics\n"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "collapsed": true
+   },
+   "outputs": [],
+   "source": [
+    "# 3. Draw ROC Curve and calculate AUC\n"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "collapsed": true
+   },
+   "outputs": [],
+   "source": [
+    "# 4. Calculate the total misclassification loss\n"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "collapsed": true
+   },
+   "outputs": [],
+   "source": [
+    "# 5. Build the confusion matrix for the tests data for both the default and optimal thresholds\n"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "collapsed": true
+   },
+   "outputs": [],
+   "source": [
+    "# 6. Display the confusion matrices\n"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "collapsed": true
+   },
+   "outputs": [],
+   "source": []
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "collapsed": true
+   },
+   "outputs": [],
+   "source": []
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "collapsed": true
+   },
+   "outputs": [],
+   "source": [
+    "print(\"You're done! Give yourself a pat on the back! You've earned a break. Take 5.\")"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "collapsed": true
+   },
+   "outputs": [],
+   "source": []
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "collapsed": true
+   },
+   "outputs": [],
+   "source": []
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "collapsed": true
+   },
+   "outputs": [],
+   "source": []
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "collapsed": true
+   },
+   "outputs": [],
+   "source": []
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "collapsed": true
+   },
+   "outputs": [],
+   "source": []
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "collapsed": true
+   },
+   "outputs": [],
+   "source": []
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "collapsed": true
+   },
+   "outputs": [],
+   "source": []
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "collapsed": true
+   },
+   "outputs": [],
+   "source": []
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "collapsed": true
+   },
+   "outputs": [],
+   "source": []
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "collapsed": true
+   },
+   "outputs": [],
+   "source": []
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "collapsed": true
+   },
+   "outputs": [],
+   "source": []
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "collapsed": true
+   },
+   "outputs": [],
+   "source": []
+  }
+ ],
+ "metadata": {
+  "kernelspec": {
+   "display_name": "Python 3",
+   "language": "python",
+   "name": "python3"
+  },
+  "language_info": {
+   "codemirror_mode": {
+    "name": "ipython",
+    "version": 3
+   },
+   "file_extension": ".py",
+   "mimetype": "text/x-python",
+   "name": "python",
+   "nbconvert_exporter": "python",
+   "pygments_lexer": "ipython3",
+   "version": "3.5.4"
+  }
+ },
+ "nbformat": 4,
+ "nbformat_minor": 2
+}

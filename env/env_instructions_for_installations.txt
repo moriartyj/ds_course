@@ -1,0 +1,19 @@
+# Download and install Anaconda 
+# https://www.anaconda.com/download/
+
+# Open command-prompt and enter the following commands (answer 'yes' to any questions):
+1. conda create -n bgucourse python=3.5 ipython jupyter 
+2. activate bgucourse
+3. pip install --ignore-installed --upgrade  matplotlib  pandas numpy scipy datetime pathlib nbformat sklearn  seaborn tabulate
+4. pip install --ignore-installed --upgrade  pydotplus
+5. conda install statsmodels
+
+# in case there's an error, and you want to re-do the entire thing, erase the env by using:
+# conda env remove -n bgucourse
+
+# also needs graphviz installation on the computer
+1. http://www.graphviz.org/Download..php
+2. After installation, add graphviz's /bin folder to windows' PATH.
+   On Windows 10 this is at [Computer --> properties --> advanced system settings --> Environment Variables]
+   This should be something like "C:\Program Files (x86)\Graphviz2.38\bin", depending on where you chose to install graphviz
+

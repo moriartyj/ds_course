@@ -1,0 +1,29 @@
+if ( account_balance_'no account' <= 0.5 ) {
+	if ( duration <= 11.5 ) {
+		if ( property_magnitude_'real estate' <= 0.5 ) {
+			return [[ 16.  27.]]
+		} else {
+			return [[  1.  43.]]
+		}
+	} else {
+		if ( duration <= 31.5 ) {
+			return [[ 119.  183.]]
+		} else {
+			return [[ 57.  40.]]
+		}
+	}
+} else {
+	if ( other_payment_plans_none <= 0.5 ) {
+		if ( residence_since <= 2.5 ) {
+			return [[ 12.  17.]]
+		} else {
+			return [[  4.  19.]]
+		}
+	} else {
+		if ( age <= 23.5 ) {
+			return [[  7.  14.]]
+		} else {
+			return [[  14.  227.]]
+		}
+	}
+}

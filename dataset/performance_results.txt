@@ -1,0 +1,32 @@
+# all columns included
++----+------------------------------+----------+--------+
+|    | Classifier                   |      AUC |   LOSS |
+|----+------------------------------+----------+--------|
+|  0 | Logistic Regression          | 0.805495 |    354 |
+|  1 | Naive-Bayes                  | 0.812692 |    395 |
+|  2 | Linear Discriminant Analysis | 0.808242 |    364 |
+|  3 | Decision Tree                | 0.668846 |    266 |
+|  4 | Random Forest                | 0.784945 |    289 |
++----+------------------------------+----------+--------+
+
+# after dropping high p-value numeric columns: 'residence_since', 'num_dependents', 'existing_credits'
+
++----+------------------------------+----------+--------+
+|    | Classifier                   |      AUC |   LOSS |
+|----+------------------------------+----------+--------|
+|  0 | Logistic Regression          | 0.802308 |    358 |
+|  1 | Naive-Bayes                  | 0.812692 |    395 |
+|  2 | Linear Discriminant Analysis | 0.806484 |    362 |
+|  3 | Decision Tree                | 0.666978 |    275 |
+|  4 | Random Forest                | 0.773956 |    299 |
++----+------------------------------+----------+--------+
+
++----+------------------------------+----------+---------+
+|    | Classifier                   |      AUC |    LOSS |
+|----+------------------------------+----------+---------|
+|  0 | Logistic Regression          | 0.805495 | 0.4425  |
+|  1 | Naive-Bayes                  | 0.812692 | 0.49375 |
+|  2 | Linear Discriminant Analysis | 0.800879 | 0.45    |
+|  3 | Decision Tree                | 0.648791 | 0.19875 |
+|  4 | Random Forest                | 0.78511  | 0.15875 |
++----+------------------------------+----------+---------+
