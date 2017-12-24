@@ -9,13 +9,22 @@ import copy
 import sys
 from sklearn.externals.six import StringIO
 import pydotplus
+from functools import reduce
 
 
 def write_Tree(fname_outdir, clf, cols_features):
+    # Translate inequalities to their HTML code
+    patterns = {
+        '<=': '&le;',
+        '>=': '&ge;',
+        '<': '&lt;',
+        '>': '&gt;',
+    }
+    cols_features = [ reduce(lambda x, y: x.replace(y, patterns[y]), patterns, cols_feature)
+                      for cols_feature in cols_features ]
     # Write rules to file
     # REMEMBER: Rules refer ONLY to the TRAINING data!
-    fname_DT_rules = fname_outdir + r'\DT_rules_output.txt'
-    
+    fname_DT_rules = fname_outdir + r'/DT_rules_output.txt'
     old_stdout = sys.stdout
     sys.stdout = mystdout = StringIO()
     get_code(clf, cols_features) # get_code() is a function from helper_functions.py
@@ -31,8 +40,8 @@ def write_Tree(fname_outdir, clf, cols_features):
     # in order to visualize the decision tree
 
     # ERROR!! there's some bug with deep trees (max_depth > 5)
-    outfile= fname_outdir + r'\tree.dot'
-    pngfile= fname_outdir + r'\tree.png'
+    outfile= fname_outdir + r'/tree.dot'
+    pngfile= fname_outdir + r'/tree.png'
     dot_data = StringIO()  
     tree.export_graphviz(clf, out_file=outfile,  
                          feature_names=cols_features,  
